@@ -1,0 +1,24 @@
+{
+  "name": "movie-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noah-springwater/Web-Scrape-IMDB.git"
+  },
+  "author": "Noah Springwater",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noah-springwater/Web-Scrape-IMDB/issues"
+  },
+  "homepage": "https://github.com/noah-springwater/Web-Scrape-IMDB#readme",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "express": "^4.13.4",
+    "request": "^2.69.0"
+  }
+}
