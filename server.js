@@ -4,7 +4,11 @@ var request = require('request');
 var cheerio = require('cheerio');
 var app = express();
 
-app.get('/scrape', function(req, res){
+app.listen('8081');
+
+console.log('Listening on port 8081');
+
+app.get('/scrape', function(req, res) {
   //all web scraping magic happens here
 
   url = 'http://www.imdb.com/title/tt1229340/'; //anchorman 2
@@ -15,59 +19,62 @@ app.get('/scrape', function(req, res){
 
   request(url, function (error, response, html) {
     //first check for errors
-    if (!error) {
-      var $ = cheerio.load(html);
+  if (!error) {
+    var $ = cheerio.load(html);
 
     //Define the variables we're going to capture
-      var title, release, rating;
-      var json = { title : "", release : "", rating: ""};
+    var title, release, rating;
+    json = {
+      title : "",
+      release : "",
+      rating: ""
+    };
     //After going into dev tools and finding unique header for name as starting point
 
-    $('.header').filter(function() {
+  $('#title-overview-widget > div.vital > div.title_block > div > div.titleBar > div.title_wrapper > h1').filter(function() {
     //Store data we filter into variable so we can easily see what's going on
-      var data = $(this);
+    var data = $(this);
 
     //Title rests within the first child element of header
     //Grab text
 
-      title = data.children().first().text();
-
-      release = data.children().last().children().text();
+    title = data.text();
 
     //Store title in json
 
-      json.title = title;
+    json.title = title;
 
-    //Store release date in json
 
-      json.release = release;
+  });
 
-    })
+  $('#titleYear > a').filter(function () {
+    var data = $(this);
 
-    $('.star-box-giga-star').filter(function () {
-      var data = $(this);
+    release = data.text();
 
-      rating = data.text();
+    json.release = release;
 
-      json.rating = rating;
+  });
 
-    })
+  $('#title-overview-widget > div.vital > div.title_block > div >  div.ratings_wrapper > div.imdbRating > div.ratingValue > strong > span').filter(function () {
+    var data = $(this);
+    rating = data.text();
+    json.rating = rating;
 
-  }
+  });
+
+}
 
 fs.writeFile('output.json', JSON.stringify(json, null, 4), function (err) {
 
   console.log('File successfully written! - file is in project directory for output.json file');
 
-})
+});
   //Send message to browser reminding app it doesn't have a UI
   res.send('Check your console!')
 
     });
-})
+});
 
-app.listen('8081')
 
-console.log('Listening on port 8081');
-
-exports = module.exports = app;
+//exports = module.exports = app;
