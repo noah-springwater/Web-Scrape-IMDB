@@ -11,7 +11,7 @@ console.log('Listening on port 8081');
 app.get('/scrape', function(req, res) {
   //all web scraping magic happens here
 
-  url = 'http://www.imdb.com/title/tt1229340/'; //anchorman 2
+  url = 'http://www.imdb.com/title/tt0396269/'; //anchorman 2
 
   //the structure of our request call
   //the first parameter is our url
@@ -25,8 +25,8 @@ app.get('/scrape', function(req, res) {
     //Define the variables we're going to capture
     var title, release, rating;
     json = {
-      title : "",
-      release : "",
+      title: "",
+      release: "",
       rating: ""
     };
     //After going into dev tools and finding unique header for name as starting point
@@ -56,9 +56,11 @@ app.get('/scrape', function(req, res) {
 
   });
 
-  $('#title-overview-widget > div.vital > div.title_block > div >  div.ratings_wrapper > div.imdbRating > div.ratingValue > strong > span').filter(function () {
+  $('#title-overview-widget > div.vital > div.title_block > div > div.ratings_wrapper > div.imdbRating > div.ratingValue > strong > span').filter(function () {
     var data = $(this);
+
     rating = data.text();
+
     json.rating = rating;
 
   });
@@ -71,7 +73,7 @@ fs.writeFile('output.json', JSON.stringify(json, null, 4), function (err) {
 
 });
   //Send message to browser reminding app it doesn't have a UI
-  res.send('Check your console!')
+  res.send('Check your console!');
 
     });
 });
